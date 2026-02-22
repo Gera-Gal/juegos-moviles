@@ -72,7 +72,7 @@ class LotteryViewModel: ViewModel() {
                     error = null
                 )
 
-                val apiResponse = Network.api.playLottery(_userNumber, _digits.toInt())
+                val apiResponse = Network.lotteryApi.playLottery(_userNumber, _digits.toInt())
                 if (apiResponse.isSuccessful) {
                     Log.d(TAG, "API response: ${apiResponse.body()}")
                     var playerPoints: Int = 0

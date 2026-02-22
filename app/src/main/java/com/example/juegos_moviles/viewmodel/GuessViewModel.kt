@@ -71,7 +71,7 @@ class GuessViewModel: ViewModel() {
                     error = null
                 )
 
-                val apiResponse = Network.api.guessNumber(_userNumber.toInt(), _maxNumber.toInt())
+                val apiResponse = Network.guessApi.guessNumber(_userNumber.toInt(), _maxNumber.toInt())
                 if (apiResponse.isSuccessful) {
                     Log.d(TAG, "API response: ${apiResponse.body()}")
                     var playerPoints: Int = 0
