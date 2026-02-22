@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,26 +33,36 @@ fun ChoiceButton(
     name: String,
     description: String,
     onClick: () -> Unit,
+    selected: Boolean,
     modifier: Modifier = Modifier
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
+    val backgroundColor = if (selected) Color(0xFFFFFF99) else Color.White
+    val borderColor = if (selected) Color(0xFF009900) else DarkBackground
+    val textColor = if (selected) Color.Black else DarkBackground
+    val descriptionColor = if (selected) Color.Black else Color.Gray
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .shadow(
-                elevation = if (isPressed) 4.dp else 10.dp,
-                shape = RoundedCornerShape(20.dp)
+                elevation = when {
+                    selected -> 2.dp
+                    isPressed -> 4.dp
+                    else -> 10.dp
+                },
+                shape = RoundedCornerShape(if (selected) 6.dp else 20.dp)
             )
             .background(
-                color = Color.White,
-                shape = RoundedCornerShape(20.dp)
+                color = backgroundColor,
+                shape = RoundedCornerShape(if (selected) 6.dp else 20.dp)
             )
             .border(
-                width = 6.dp,
-                color = DarkBackground,
-                shape = RoundedCornerShape(20.dp)
+                width = if (selected) 8.dp else 6.dp,
+                color = borderColor,
+                shape = RoundedCornerShape(if (selected) 6.dp else 20.dp)
             )
             .clickable(
                 interactionSource = interactionSource,
@@ -64,7 +75,6 @@ fun ChoiceButton(
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Icono
             Box(
                 modifier = Modifier
                     .size(80.dp)
@@ -85,7 +95,6 @@ fun ChoiceButton(
                 )
             }
 
-            // Información
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -93,15 +102,17 @@ fun ChoiceButton(
                     text = name,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Black,
-                    color = DarkBackground,
-                    letterSpacing = 1.sp
+                    color = textColor,
+                    letterSpacing = 1.sp,
+                    fontFamily = FontFamily.Monospace
                 )
                 Text(
                     text = description,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Gray,
-                    letterSpacing = 0.5.sp
+                    color = descriptionColor,
+                    letterSpacing = 0.5.sp,
+                    fontFamily = FontFamily.Monospace
                 )
             }
         }
