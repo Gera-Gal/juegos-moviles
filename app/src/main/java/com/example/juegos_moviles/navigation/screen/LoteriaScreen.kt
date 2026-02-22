@@ -123,8 +123,8 @@ fun LoteriaScreen(
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
-            if(state.digits.toInt() > 1) {
-                val digits = state.digits.toInt() - 1
+            if(!state.digits.isEmpty() && state.digits.toInt() > 1) {
+                val digits = state.digits.toInt()
                 val validFormat = "9".padStart(digits, '0')
                 Text(
                     text = "Cada dígito puede estar entre 0 y 1, \"${validFormat}\" sería válido",
