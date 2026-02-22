@@ -8,10 +8,9 @@ import com.example.juegos_moviles.network.Network
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import kotlin.Int
 
-data class EEDUiState(
+data class EedUiState(
     val playerPoints: Int = 0,
     val cpuPoints: Int = 0,
     val userChoice: String = "",
@@ -21,15 +20,15 @@ data class EEDUiState(
     val error: String? = null
 )
 
-class EEDViewModel: ViewModel() {
+class EedViewModel: ViewModel() {
     companion object {
-        private const val TAG = "EEDViewModel"
+        private const val TAG = "UiEedState"
     }
-    private val _uiEEDState = MutableStateFlow(EEDUiState())
-    val uiEEDState: StateFlow<EEDUiState> = _uiEEDState
+    private val _uiEedState = MutableStateFlow(EedUiState())
+    val uiEedState: StateFlow<EedUiState> = _uiEedState
 
     fun setUserChoice(userChoice: String) {
-        _uiEEDState.value = _uiEEDState.value.copy(
+        _uiEedState.value = _uiEedState.value.copy(
             userChoice = userChoice,
             cpuChoice = "",
             response = null,
@@ -39,12 +38,12 @@ class EEDViewModel: ViewModel() {
     }
 
     fun fight() {
-        val _userChoice = _uiEEDState.value.userChoice
+        val _userChoice = _uiEedState.value.userChoice
 
         Log.d(TAG, "User choice: $_userChoice")
 
         if(_userChoice == "") {
-            _uiEEDState.value = _uiEEDState.value.copy(
+            _uiEedState.value = _uiEedState.value.copy(
                 userChoice = "",
                 cpuChoice = "",
                 response = null,
@@ -56,7 +55,7 @@ class EEDViewModel: ViewModel() {
 
         viewModelScope.launch {
             try {
-                _uiEEDState.value = _uiEEDState.value.copy(
+                _uiEedState.value = _uiEedState.value.copy(
                     userChoice = "",
                     cpuChoice = "",
                     response = null,
@@ -64,13 +63,13 @@ class EEDViewModel: ViewModel() {
                     error = null
                 )
 
-                val apiResponse = Network.api.fight(_userChoice)
+                val apiResponse = Network.eedApi.fight(_userChoice)
                 if(apiResponse.isSuccessful) {
                     Log.d(TAG, "API response: ${apiResponse.body()}")
-                    _uiEEDState.value = _uiEEDState.value.copy(
-                        playerPoints = _uiEEDState.value.playerPoints + (apiResponse.body()?.result
+                    _uiEedState.value = _uiEedState.value.copy(
+                        playerPoints = _uiEedState.value.playerPoints + (apiResponse.body()?.result
                             ?: 0),
-                        cpuPoints = _uiEEDState.value.cpuPoints + ((apiResponse.body()?.result?.times(-1))
+                        cpuPoints = _uiEedState.value.cpuPoints + ((apiResponse.body()?.result?.times(-1))
                             ?: 0),
                         userChoice = "",
                         cpuChoice = (apiResponse.body()?.choices?.cpu
@@ -80,14 +79,14 @@ class EEDViewModel: ViewModel() {
                         error = null
                     )
                 } else {
-                    _uiEEDState.value = _uiEEDState.value.copy(
+                    _uiEedState.value = _uiEedState.value.copy(
                         response = null,
                         loading = false,
                         error = "Error HTTP: ${apiResponse.code()}"
                     )
                 }
             } catch (e: Exception) {
-                _uiEEDState.value = _uiEEDState.value.copy(
+                _uiEedState.value = _uiEedState.value.copy(
                     response = null,
                     loading = false,
                     error = "Error de conexión: ${e.message}"
