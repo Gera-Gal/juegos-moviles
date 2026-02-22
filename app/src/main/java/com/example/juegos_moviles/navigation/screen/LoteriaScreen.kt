@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,16 +16,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -38,17 +33,14 @@ import com.example.juegos_moviles.viewmodel.LotteryViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoteriaScreen(
-    vm: LotteryViewModel,
-    navController: NavController = rememberNavController()
+    vm: LotteryViewModel
 ) {
     val state by vm.lotteryState.collectAsState()
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.ticket)
     )
 
-    Scaffold(
-        topBar = { TopAppBar(title = { Text("Lotería") }) }
-    ) { padding ->
+    Scaffold { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -56,20 +48,6 @@ fun LoteriaScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Button(
-                onClick = { navController.navigate("mainMenu") }
-            ) {
-                Text("Volver")
-            }
-
-            LottieAnimation(
-                composition = composition,
-                iterations = LottieConstants.IterateForever,
-                modifier = Modifier
-                    .size(80.dp)
-                    .offset(x=40.dp,y=32.dp)
-            )
-
             Text(
                 text = "Marcador\nJugador: ${state.playerPoints}",
                 style = MaterialTheme.typography.titleLarge
@@ -165,6 +143,13 @@ fun LoteriaScreen(
                     keyboardType = KeyboardType.Number
                 ),
                 modifier = Modifier.fillMaxWidth()
+            )
+            LottieAnimation(
+                composition = composition,
+                iterations = LottieConstants.IterateForever,
+                modifier = Modifier
+                    .size(80.dp)
+                    .offset(x=40.dp,y=32.dp)
             )
         }
     }

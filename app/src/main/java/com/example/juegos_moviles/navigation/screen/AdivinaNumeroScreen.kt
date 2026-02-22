@@ -5,11 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,34 +14,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
-import com.example.juegos_moviles.R
 import com.example.juegos_moviles.component.CustomButton
 import com.example.juegos_moviles.viewmodel.GuessViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdivinaNumeroScreen(
-    vm: GuessViewModel,
-    navController: NavController = rememberNavController()
+    vm: GuessViewModel
 ) {
     val state by vm.guessState.collectAsState()
 
-    Scaffold(
-        topBar = { TopAppBar(title = { Text("Adivina el número") }) }
-    ) { padding ->
+    Scaffold { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -52,12 +38,6 @@ fun AdivinaNumeroScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Button(
-                onClick = { navController.navigate("mainMenu") }
-            ) {
-                Text("Volver")
-            }
-
             Text(
                 text = "Marcador\nJugador: ${state.playerPoints}",
                 style = MaterialTheme.typography.titleLarge
